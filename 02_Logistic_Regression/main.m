@@ -2,7 +2,7 @@
 clear; close all; clc;
 
 % 載入數據
-data = load('1.txt');
+data = load('2.txt');
 X = data(:, 1:2);
 y = data(:, 3);
 
@@ -20,13 +20,16 @@ X = PolynomialFeatures(X);
 
 % 初始化theta
 theta = zeros(n, 1);
-[J, grad] = CostFunction(X, y, theta)
+alpha = 0.1;
+lambda = 0.1;
+[J, grad] = CostFunction(X, y, theta, alpha, lambda)
 
 % Gradient Descent (fminunc更有效率)
 %theta = GradientDescent(X, y, 0.01, 500000);
 options = optimset('GradObj', 'on', 'MaxIter', 1500);
-[theta, cost, a, b] = ...
-    fminunc(@(t)CostFunction(X, y, t), theta, options);
+[theta, cost] = ...
+    fminunc(@(t)CostFunction(X, y, t, alpha, lambda), ...
+    theta, options);
 
 % 顯示分隔線
 hold on;
